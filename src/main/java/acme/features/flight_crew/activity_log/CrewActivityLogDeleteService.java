@@ -5,7 +5,6 @@ import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import acme.client.components.models.Dataset;
 import acme.client.helpers.MomentHelper;
 import acme.client.services.AbstractGuiService;
 import acme.client.services.GuiService;
@@ -80,19 +79,6 @@ public class CrewActivityLogDeleteService extends AbstractGuiService<FlightCrew,
 	@Override
 	public void perform(final ActivityLog log) {
 		this.repository.delete(log);
-	}
-
-	@Override
-	public void unbind(final ActivityLog log) {
-		Dataset dataset;
-
-		dataset = super.unbindObject(log, "registrationMoment", "typeOfIncident", "description", "severityLevel");
-		dataset.put("validDraft", log.isDraftMode() //
-			&& !log.getFlightAssignment().isDraftMode() //
-			&& log.getFlightAssignment().getLeg().isPublished() //
-		);
-
-		super.getResponse().addData(dataset);
 	}
 
 }

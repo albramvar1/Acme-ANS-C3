@@ -5,7 +5,6 @@ import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import acme.client.components.models.Dataset;
 import acme.client.helpers.MomentHelper;
 import acme.client.services.AbstractGuiService;
 import acme.client.services.GuiService;
@@ -84,15 +83,5 @@ public class CrewActivityLogPublishService extends AbstractGuiService<FlightCrew
 	public void perform(final ActivityLog log) {
 		log.setDraftMode(false);
 		this.repository.save(log);
-	}
-
-	@Override
-	public void unbind(final ActivityLog log) {
-		Dataset dataset;
-
-		dataset = super.unbindObject(log, "registrationMoment", "typeOfIncident", "description", "severityLevel");
-		dataset.put("validDraft", log.isDraftMode() && !log.getFlightAssignment().isDraftMode() && log.getFlightAssignment().getLeg().isPublished());
-
-		super.getResponse().addData(dataset);
 	}
 }

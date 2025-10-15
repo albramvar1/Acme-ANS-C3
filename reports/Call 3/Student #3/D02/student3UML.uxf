@@ -1,0 +1,52 @@
+<diagram program="umletino" version="15.1"><zoom_level>10</zoom_level><element><id>UMLClass</id><coordinates><x>50</x><y>250</y><w>500</w><h>120</h></coordinates><panel_attributes>&lt;&lt;Entity&gt;&gt;
+FlightAssignment
+--
++ duty: CrewDuty {Mandatory, Valid, Automapped}
++ lastUpdate: Date {Mandatory, ValidMoment, Temporal(TemporalType.TIMESTAMP)}
++ status: AssignmentStatus {Mandatory, Valid, Automapped}
+- remarks: String {Optional, ValidLongText, Automapped}
+
+bg=green</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>850</x><y>230</y><w>400</w><h>150</h></coordinates><panel_attributes>&lt;&lt;Role&gt;&gt;
+FlightCrewMember {ValidFlightCrewMemberIdentifier}
+--
++ identifier: String {Mandatory, ValidIdentifier, Column(unique=true)}
++ phone: String {Mandatory, ValidPhone, Automapped}
++ languageSkills: String {Mandatory, ValidLongText, Automapped}
++ availability: Availability {Mandatory, Valid, Automapped}
++ salary: Money {Mandatory, ValidMoney, Automapped}
+- experience: Integer {Optional, ValidExperience, Automapped}
+
+bg=blue</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>780</x><y>530</y><w>540</w><h>140</h></coordinates><panel_attributes>&lt;&lt;Entity&gt;&gt;
+Airline
+--
++ name: String {Mandatory, ValidShortText, Automapped}
++ IATA code: String {Mandatory, ValidString(pattern = "^[A-Z]{3}$"), Column(unique = true)}
++ webSite: String {Optional, ValidURL, Automapped}
++ type: AirlineType {Mandatory, Valid, Automapped}
+- email: String {Optional, ValidEmail, Automapped}
++ phoneNumber: String {Optional, ValidString(pattern = "^\\+?\\d{6,15}$"), Automapped}
+
+bg=red</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>30</x><y>550</y><w>550</w><h>120</h></coordinates><panel_attributes>&lt;&lt;Entity&gt;&gt;
+Log
+--
++ registrationMoment: Date {Mandatory, ValidMoment, Temporal(TemporalType.TIMESTAMP)}
++ incidentType: String{Mandatory, ValidIncidentType, Automapped}
++ description: String {Mandatory, ValidLongText, Automapped}
++ severity: Integer {Mandatory, ValidSeverity, Automapped}
+
+bg=green</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1040</x><y>370</y><w>90</w><h>180</h></coordinates><panel_attributes>Works at &gt;
+lt=&lt;-x
+m1=1
+m2=*
+
+</panel_attributes><additional_attributes>10;160;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>540</x><y>290</y><w>330</w><h>60</h></coordinates><panel_attributes>Assigned to &gt;
+lt=&lt;-x
+m1=1
+m2=*
+
+</panel_attributes><additional_attributes>310;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>300</x><y>360</y><w>110</w><h>210</h></coordinates><panel_attributes>References &gt;
+lt=&lt;-x
+m1=1
+m2=*
+
+</panel_attributes><additional_attributes>10;10;10;190</additional_attributes></element></diagram>
