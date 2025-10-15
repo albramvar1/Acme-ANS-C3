@@ -20,21 +20,21 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
-	<version> C2</version>
+	<version> C3</version>
 	<artifactId>Acme-ANS</artifactId>
 	<packaging>war</packaging>
 	<parent>
 		<groupId>Acme</groupId>
 		<artifactId>pom</artifactId>
-		<version>25.5.0</version>
-		<relativePath>../../pom-25.5.0.xml</relativePath>
+		<version>25.7.0</version>
+		<relativePath>../../pom-25.7.0.xml</relativePath>
 	</parent>
 	
 	<dependencies>
 		<dependency>
 			<groupId>Acme</groupId>
 			<artifactId>Acme-Framework</artifactId>
-			<version>25.5.0</version>
+			<version>25.7.0</version>
 		</dependency>
 	</dependencies>
 </project>
