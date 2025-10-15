@@ -1,11 +1,15 @@
 
 package acme.features.flight_crew.activity_log;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import acme.client.components.models.Dataset;
+import acme.client.helpers.MomentHelper;
 import acme.client.services.AbstractGuiService;
 import acme.client.services.GuiService;
+import acme.datatypes.AssignmentStatus;
 import acme.entities.activity_log.ActivityLog;
 import acme.realms.FlightCrew;
 
@@ -22,49 +26,55 @@ public class CrewActivityLogDeleteService extends AbstractGuiService<FlightCrew,
 
 	@Override
 	public void authorise() {
-		boolean status;
-		int crewId = super.getRequest().getPrincipal().getActiveRealm().getId();
-		int id;
+		boolean authorised = false;
+		int logId;
+		ActivityLog log;
 
-		try {
-			id = super.getRequest().hasData("id") ? super.getRequest().getData("id", int.class) : 0;
+		if (super.getRequest().hasData("id", int.class)) {
+			logId = super.getRequest().getData("id", int.class);
+			log = this.repository.findOneById(logId);
 
-			ActivityLog log = this.repository.findById(id);
-			status = log != null;
-			if (!status) {
-				super.getResponse().setAuthorised(status);
-				return;
+			if (log != null) {
+
+				// La etapa debe haber finalizado
+				boolean legFinished = !log.getFlightAssignment().getLeg().getScheduledArrival().after(MomentHelper.getCurrentMoment());
+
+				authorised = log.isDraftMode() //
+					&& super.getRequest().getPrincipal().hasRealm(log.getFlightAssignment().getFlightCrewMember()) //
+					&& log.getFlightAssignment().getAssignmentStatus() == AssignmentStatus.CONFIRMED && !log.getFlightAssignment().isDraftMode() //
+					&& log.getFlightAssignment().getLeg().isPublished() //
+					&& legFinished;
 			}
-
-			boolean isLogPublished = log != null && log.getPublished();
-			boolean isLogFromAuthenticatedCrew = log != null && log.getFlightAssignment().getAssignee().getId() == crewId;
-			status = !isLogPublished && isLogFromAuthenticatedCrew;
-		} catch (Exception e) {
-			status = false;
 		}
 
-		super.getResponse().setAuthorised(status);
+		super.getResponse().setAuthorised(authorised);
 	}
 
 	@Override
 	public void load() {
+
 		ActivityLog log;
 		int id;
 
 		id = super.getRequest().getData("id", int.class);
-		log = this.repository.findById(id);
+		log = this.repository.findOneById(id);
 
 		super.getBuffer().addData(log);
+
 	}
 
 	@Override
 	public void bind(final ActivityLog log) {
-		super.bindObject(log);
+		super.bindObject(log, "typeOfIncident", "description", "severityLevel");
 	}
 
 	@Override
 	public void validate(final ActivityLog log) {
-		;
+		super.state(log.isDraftMode(), "*", "crewMember.log.error.already-published");
+
+		Date now = MomentHelper.getCurrentMoment();
+		Date arrival = log.getFlightAssignment().getLeg().getScheduledArrival();
+		super.state(!arrival.after(now), "*", "crewMember.log.error.leg.finished");
 	}
 
 	@Override
@@ -75,7 +85,13 @@ public class CrewActivityLogDeleteService extends AbstractGuiService<FlightCrew,
 	@Override
 	public void unbind(final ActivityLog log) {
 		Dataset dataset;
-		dataset = super.unbindObject(log, "registrationMoment", "incidentType", "description", "severity");
+
+		dataset = super.unbindObject(log, "registrationMoment", "typeOfIncident", "description", "severityLevel");
+		dataset.put("validDraft", log.isDraftMode() //
+			&& !log.getFlightAssignment().isDraftMode() //
+			&& log.getFlightAssignment().getLeg().isPublished() //
+		);
+
 		super.getResponse().addData(dataset);
 	}
 

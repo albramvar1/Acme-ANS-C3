@@ -15,36 +15,27 @@ import acme.client.components.basis.AbstractEntity;
 import acme.client.components.mappings.Automapped;
 import acme.client.components.validation.Mandatory;
 import acme.client.components.validation.ValidMoment;
-import acme.constraints.ValidIncidentType;
-import acme.constraints.ValidLongText;
-import acme.constraints.ValidSeverity;
+import acme.client.components.validation.ValidNumber;
+import acme.client.components.validation.ValidString;
 import acme.entities.flight_assignment.FlightAssignment;
-import acme.entities.leg.Leg;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
-@Table(name = "activity_log", indexes = {
+
+@Table(indexes = {
 	@Index(columnList = "flight_assignment_id")
 })
+
 public class ActivityLog extends AbstractEntity {
 
-	/*
-	 * An activity log records incidents that occur during a flight. They are logged by any of the flight crew
-	 * members assigned to the corresponding leg and after the leg has taken place. The incidents include
-	 * weather-related disruptions, route deviations, passenger issues, or mechanical failures, to mention a few.
-	 * Each log entry includes a registration moment (in the past), a type of incident (up to 50 characters) a
-	 * description (up to 255 characters), and a severity level (ranging from 0 to 10, where 0 indicates no issue
-	 * and 10 represents a highly critical situation).
-	 */
-
-	// Serialisation version --------------------------------------------------
+	// Serialisation version
 
 	private static final long	serialVersionUID	= 1L;
 
-	// Attributes -------------------------------------------------------------
+	// Attributes
 
 	@Mandatory
 	@ValidMoment(past = true)
@@ -52,27 +43,21 @@ public class ActivityLog extends AbstractEntity {
 	private Date				registrationMoment;
 
 	@Mandatory
-	@ValidIncidentType
+	@ValidString(max = 50)
 	@Automapped
-	private String				incidentType;
+	private String				typeOfIncident;
 
 	@Mandatory
-	@ValidLongText
+	@ValidString
 	@Automapped
 	private String				description;
 
 	@Mandatory
-	@ValidSeverity
+	@ValidNumber(min = 0, max = 10, integer = 2)
 	@Automapped
-	private Integer				severity;
+	private Integer				severityLevel;
 
-	@Mandatory
-	@Automapped
-	private Boolean				published;
-
-	// Derived attributes -----------------------------------------------------
-
-	// Relationships ----------------------------------------------------------
+	// Relationships
 
 	@Mandatory
 	@Valid
@@ -80,8 +65,7 @@ public class ActivityLog extends AbstractEntity {
 	private FlightAssignment	flightAssignment;
 
 	@Mandatory
-	@Valid
-	@ManyToOne(optional = false)
-	private Leg					leg;
+	@Automapped
+	private boolean				draftMode;
 
 }

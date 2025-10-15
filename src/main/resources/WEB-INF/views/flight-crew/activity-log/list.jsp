@@ -4,13 +4,13 @@
 <%@taglib prefix="acme" uri="http://acme-framework.org/"%>
 
 <acme:list>
-	<acme:list-column code="authenticated.crew.label.registrationMoment" path="registrationMoment"/>
-	<acme:list-column code="authenticated.crew.label.incidentType" path="incidentType"/>
-	<acme:list-column code="authenticated.crew.label.severity" path="severity"/>
-	<acme:list-column code="authenticated.crew.label.leg" path="leg"/>
-	<acme:list-column code="authenticated.crew.label.published" path="published"/>
+	<acme:list-column code="crewMember.log.list.label.flightNumber" path="flightAssignment.leg.flightCode"/>
+	<acme:list-column code="crewMember.log.list.label.crewRole" path="flightAssignment.crewRole"/>
+	<acme:list-column code="crewMember.log.list.label.typeOfIncident" path="typeOfIncident"/>
+	<acme:list-column code="crewMember.log.list.label.severityLevel" path="severityLevel"/>
 	<acme:list-payload path="payload"/>
 </acme:list>
-<jstl:if test="${_command == 'list'}">
-	<acme:button code="authenticated.crew.button.create" action="/flight-crew/activity-log/create"/>
-</jstl:if>	
+
+<jstl:if test="${canCreate}">
+    <acme:button code="crewMember.log.list.button.create" action="/flight-crew/activity-log/create?masterId=${masterId}"/>
+</jstl:if>

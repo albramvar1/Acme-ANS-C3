@@ -1,17 +1,14 @@
 
 package acme.features.flight_crew.activity_log;
 
-import java.util.Collection;
-
 import org.springframework.beans.factory.annotation.Autowired;
 
 import acme.client.components.models.Dataset;
-import acme.client.components.views.SelectChoices;
+import acme.client.helpers.MomentHelper;
 import acme.client.services.AbstractGuiService;
 import acme.client.services.GuiService;
+import acme.datatypes.AssignmentStatus;
 import acme.entities.activity_log.ActivityLog;
-import acme.entities.leg.Leg;
-import acme.features.flight_crew.flight_assignment.FlightAssignmentRepository;
 import acme.realms.FlightCrew;
 
 @GuiService
@@ -20,62 +17,51 @@ public class CrewActivityLogShowService extends AbstractGuiService<FlightCrew, A
 	// Internal state ---------------------------------------------------------
 
 	@Autowired
-	private ActivityLogRepository		repository;
-	@Autowired
-	private FlightAssignmentRepository	assignmentRepository;
+	private ActivityLogRepository repository;
 
 	// AbstractGuiService interface -------------------------------------------
 
 
 	@Override
 	public void authorise() {
-		Boolean isAuthorised;
-		int userAccountId = super.getRequest().getPrincipal().getAccountId();
-		int id;
+		boolean authorised = false;
+		int logId;
+		ActivityLog log;
 
-		try {
-			id = super.getRequest().hasData("id") ? super.getRequest().getData("id", int.class) : 0;
+		if (super.getRequest().hasData("id", int.class)) {
+			logId = super.getRequest().getData("id", int.class);
+			log = this.repository.findOneById(logId);
 
-			ActivityLog log = this.repository.findById(id);
-			isAuthorised = log != null;
-			if (!isAuthorised) {
-				super.getResponse().setAuthorised(isAuthorised);
-				return;
+			if (log != null) {
+				boolean legFinished = !log.getFlightAssignment().getLeg().getScheduledArrival().after(MomentHelper.getCurrentMoment());
+				authorised = super.getRequest().getPrincipal().hasRealm(log.getFlightAssignment().getFlightCrewMember()) && log.getFlightAssignment().getAssignmentStatus() == AssignmentStatus.CONFIRMED && !log.getFlightAssignment().isDraftMode()
+					&& log.getFlightAssignment().getLeg().isPublished() && legFinished;
 			}
-
-			isAuthorised = log.getFlightAssignment().getAssignee().getUserAccount().getId() == userAccountId;
-		} catch (Exception e) {
-			isAuthorised = false;
 		}
 
-		super.getResponse().setAuthorised(isAuthorised);
+		super.getResponse().setAuthorised(authorised);
 	}
 
 	@Override
 	public void load() {
-		int id = super.getRequest().getData("id", Integer.TYPE);
-		ActivityLog log = this.repository.findById(id);
+
+		ActivityLog log;
+		int logId;
+
+		logId = super.getRequest().getData("id", int.class);
+		log = this.repository.findOneById(logId);
+
 		super.getBuffer().addData(log);
+
 	}
 
 	@Override
 	public void unbind(final ActivityLog log) {
 		Dataset dataset;
 
-		int userAccountId = super.getRequest().getPrincipal().getAccountId();
-		Collection<Leg> legs = this.assignmentRepository.findLegsByCrew(userAccountId);
-		SelectChoices legChoices = SelectChoices.from(legs, "flightCode", log.getLeg());
-
-		dataset = super.unbindObject(log, "registrationMoment", "incidentType", "description", "severity", "published");
-		dataset.put("leg", legChoices.getSelected().getKey());
-		dataset.put("legs", legChoices);
-
-		Boolean canPublish = !log.getPublished() && log.getFlightAssignment().getPublished();
-		dataset.put("canPublish", canPublish);
-
-		dataset.put("confirmation", false);
-		dataset.put("readonly", false);
-
+		dataset = super.unbindObject(log, "registrationMoment", "typeOfIncident", "description", "severityLevel");
+		dataset.put("validDraft", log.isDraftMode() && !log.getFlightAssignment().isDraftMode() && log.getFlightAssignment().getLeg().isPublished());
+		dataset.put("masterId", log.getFlightAssignment().getId());
 		super.getResponse().addData(dataset);
 	}
 

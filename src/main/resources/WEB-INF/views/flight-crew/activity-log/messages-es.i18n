@@ -1,28 +1,31 @@
-flight-crew.activity-log.list.title = Listado de Registros de Actividad
-flight-crew.activity-log.form.title = Formulario de Registro de Actividad
+flight-crew.activity-log.list.title = Lista de Incidentes
+flight-crew.activity-log.form.title = Formulario de Incidente
 
-authenticated.crew.label.registrationMoment = Momento del registro
-authenticated.crew.label.incidentType = Tipo de incidente
-authenticated.crew.label.description = Descripción
-authenticated.crew.label.severity = Severidad
-authenticated.crew.label.leg = Tramo de vuelo
-authenticated.crew.label.published = Publicado
+crewMember.log.list.label.flightNumber = Número de Vuelo
+crewMember.log.list.label.crewRole = Rol Asignado
+crewMember.log.list.label.typeOfIncident = Tipo de Incidente
+crewMember.log.list.label.severityLevel = Nivel de Severidad
 
-crew.registrationMoment.placeholder = AAAA/MM/DD HH:MM
-crew.incidentType.placeholder = Clima
-crew.description.placeholder = Explica aquí qué ha pasado
-crew.severity.placeholder = De 0 a 10
+crewMember.log.form.label.registrationMoment = Momento de Registro:
+crewMember.log.form.label.typeOfIncident = Tipo de Incidente:
+crewMember.log.form.label.description = Descripción:
+crewMember.log.form.label.severityLevel = Nivel de Severidad:
+crewMember.log.form.placeholder.severityLevel = 0 - 10
 
-authenticated.crew.button.log.create = Crear
-authenticated.crew.button.log.publish = Publicar
-authenticated.crew.button.log.update = Actualizar
-authenticated.crew.button.log.delete = Borrar
+crewMember.log.list.button.create = Crear
+crewMember.log.list.button.update = Actualizar
+crewMember.log.list.button.delete = Borrar
+crewMember.log.list.button.publish = Publicar
 
-flight-crew.activity-log.constraint.null-value = Comprueba que ningún valor dado sea nulo
-flight-crew.activity-log.constraint.assignment-not-published = No se puede publicar, la designación no ha sido publicada
-flight-crew.activity-log.constraint.invalid-flight-code = Tramo de vuelo inválido
-flight-crew.activity-log.constraint.null-leg-value = Selecciona un tramo de vuelo
-flight-crew.activity-log.constraint.log-registered-before-arrival = El registro no puede ser registrado antes de la llegada del avión
-flight-crew.activity-log.constraint.invalid-severity-value = La severidad debe estar entre 0 y 10
-flight-crew.activity-log.constraint.too-long-incident-type = El tipo de incidente debe ser menor de 50 caracteres
-flight-crew.activity-log.constraint.null-assignment = No se ha encontrado designación para este tramo de vuelo
+crewMember.log.error.typeOfIncident.required=Se requiere el tipo de incidente
+crewMember.log.error.description.required=Se requiere una descripción
+crewMember.log.error.severityLevel.required=Se requiere el nivel de severidad
+crewMember.log.error.severityLevel.range=El nivel de severidad debe estar entre 0 y 10
+crewMember.log.error.registrationMoment.required=Se requiere la fecha de registro
+crewMember.log.error.registrationMoment.past=La fecha de registro debe estar en el pasado
+
+crewMember.log.error.already-published=Este incidente ya ha sido publicado
+crewMember.log.error.assignment.not-confirmed=No se puede publicar un log para una asignación no confirmada
+crewMember.log.error.assignment.not-published=No se puede publicar un log para una asignación no publicada
+crewMember.log.error.leg.not-published=No se puede publicar un log si la etapa no está publicada
+crewMember.log.error.leg.finished = La etapa todavía no ha finalizado

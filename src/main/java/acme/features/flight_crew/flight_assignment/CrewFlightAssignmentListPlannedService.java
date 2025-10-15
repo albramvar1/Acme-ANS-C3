@@ -1,21 +1,15 @@
 
 package acme.features.flight_crew.flight_assignment;
 
-import java.time.Instant;
 import java.util.Collection;
-import java.util.Date;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import acme.client.components.models.Dataset;
+import acme.client.helpers.MomentHelper;
 import acme.client.services.AbstractGuiService;
 import acme.client.services.GuiService;
-import acme.components.FlightCrewRepository;
-import acme.datatypes.CrewDuty;
 import acme.entities.flight_assignment.FlightAssignment;
-import acme.entities.leg.Leg;
-import acme.features.manager.leg.LegRepository;
 import acme.realms.FlightCrew;
 
 @GuiService
@@ -24,11 +18,7 @@ public class CrewFlightAssignmentListPlannedService extends AbstractGuiService<F
 	// Internal state ---------------------------------------------------------
 
 	@Autowired
-	private FlightAssignmentRepository	repository;
-	@Autowired
-	private LegRepository				legRepository;
-	@Autowired
-	private FlightCrewRepository		crewRepository;
+	private FlightAssignmentRepository repository;
 
 	// AbstractGuiService interface -------------------------------------------
 
@@ -40,34 +30,26 @@ public class CrewFlightAssignmentListPlannedService extends AbstractGuiService<F
 
 	@Override
 	public void load() {
-		FlightCrew user = (FlightCrew) super.getRequest().getPrincipal().getActiveRealm();
-		List<FlightAssignment> assignments;
-		Date now = Date.from(Instant.now());
 
-		Collection<FlightAssignment> allAssignments = this.repository.findAllFlightAssignment();
-		List<Leg> legsAsLeadAttendant = allAssignments.stream() //
-			.filter(a -> a.getAssignee().equals(user)) //
-			.filter(a -> a.getDuty().equals(CrewDuty.LEAD_ATTENDANT)) //
-			.map(a -> a.getLeg()) //
-			.toList();
-		assignments = allAssignments.stream() //
-			.filter(a -> (a.getAssignee().equals(user) || legsAsLeadAttendant.contains(a.getLeg()))) //
-			.filter(a -> a.getLeg().getScheduledDeparture().after(now)) // list planned
-			.toList();
+		Collection<FlightAssignment> assignments;
+		int flightCrewMemberId;
 
-		super.getBuffer().addData(assignments);
+		flightCrewMemberId = super.getRequest().getPrincipal().getActiveRealm().getId();
+		assignments = this.repository.findAssignmentsPlannedByMemberId(flightCrewMemberId);
+
+		Collection<FlightAssignment> planned = assignments.stream().filter(a -> a.getLeg().getScheduledArrival().after(MomentHelper.getCurrentMoment())).toList();
+
+		super.getBuffer().addData(planned);
+
 	}
 
 	@Override
 	public void unbind(final FlightAssignment assignment) {
 		Dataset dataset;
-		dataset = super.unbindObject(assignment, "duty", "lastUpdate", "status", "published");
-		dataset.put("leg", assignment.getLeg().getFlightCode());
-		dataset.put("assignee", assignment.getAssignee().getIdentifier());
-		dataset.put("departure", assignment.getLeg().getScheduledDeparture());
-		dataset.put("arrival", assignment.getLeg().getScheduledArrival());
 
-		super.addPayload(dataset, assignment, "remarks");
+		dataset = super.unbindObject(assignment, "leg.flightCode", "crewRole", "leg.departureAirport.name", "leg.arrivalAirport.name");
+
 		super.getResponse().addData(dataset);
+
 	}
 }

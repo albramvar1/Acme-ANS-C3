@@ -1,28 +1,31 @@
 flight-crew.activity-log.list.title = Activity Log List
 flight-crew.activity-log.form.title = Activity Log Form
 
-authenticated.crew.label.registrationMoment = Registration moment
-authenticated.crew.label.incidentType = Incident type
-authenticated.crew.label.description = Description
-authenticated.crew.label.severity = Severity
-authenticated.crew.label.leg = Leg
-authenticated.crew.label.published = Published
+crewMember.log.list.label.flightNumber = Flight Number
+crewMember.log.list.label.crewRole = Crew Role
+crewMember.log.list.label.typeOfIncident = Type of Incident
+crewMember.log.list.label.severityLevel = Severity Level
 
-crew.registrationMoment.placeholder = YYYY/MM/DD HH:MM
-crew.incidentType.placeholder = Weather
-crew.description.placeholder = Explain here what happened
-crew.severity.placeholder = From 0 to 10
+crewMember.log.form.label.registrationMoment = Registration Moment:
+crewMember.log.form.label.typeOfIncident = Type of Incident:
+crewMember.log.form.label.description = Description:
+crewMember.log.form.label.severityLevel = Severity Level:
+crewMember.log.form.placeholder.severityLevel = 0 - 10
 
-authenticated.crew.button.create = Create
-authenticated.crew.button.publish = Publish
-authenticated.crew.button.update = Update
-authenticated.crew.button.delete = Delete
+crewMember.log.list.button.create = Create
+crewMember.log.list.button.update = Update
+crewMember.log.list.button.delete = Delete
+crewMember.log.list.button.publish = Publish
 
-flight-crew.activity-log.constraint.null-value = Check that none of the values given are null
-flight-crew.activity-log.constraint.assignment-not-published = Cannot be published, the flight assignment is not published
-flight-crew.activity-log.constraint.invalid-flight-code = Invalid leg
-flight-crew.activity-log.constraint.null-leg-value = Select a leg
-flight-crew.activity-log.constraint.log-registered-before-arrival = The log must be registered after the plane's arrival
-flight-crew.activity-log.constraint.invalid-severity-value = The severity must be between 0 and 10
-flight-crew.activity-log.constraint.too-long-incident-type = Incident type should be shorter than 50 characters long
-flight-crew.activity-log.constraint.null-assignment = No assignment could be found for this leg
+crewMember.log.error.already-published=This activity log has already been published
+crewMember.log.error.assignment.not-confirmed=Cannot publish a log for an unconfirmed assignment
+crewMember.log.error.assignment.not-published=Cannot publish a log for a draft assignment
+crewMember.log.error.leg.not-published=Cannot publish a log for a draft leg
+
+crewMember.log.error.typeOfIncident.required=Type of incident is required
+crewMember.log.error.description.required=Description is required
+crewMember.log.error.severityLevel.required=Severity level is required
+crewMember.log.error.severityLevel.range=Severity must be between 0 and 10
+crewMember.log.error.registrationMoment.required=Registration moment is required
+crewMember.log.error.registrationMoment.past=Registration moment must be in the past
+crewMember.log.error.leg.finished = The leg has not finished yet

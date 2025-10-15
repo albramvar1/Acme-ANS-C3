@@ -3,6 +3,8 @@ package acme.realms;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.validation.Valid;
 
@@ -12,11 +14,8 @@ import acme.client.components.mappings.Automapped;
 import acme.client.components.validation.Mandatory;
 import acme.client.components.validation.Optional;
 import acme.client.components.validation.ValidMoney;
-import acme.constraints.ValidExperience;
-import acme.constraints.ValidFlightCrewIdentifier;
-import acme.constraints.ValidIdentifier;
-import acme.constraints.ValidLongText;
-import acme.constraints.ValidPhone;
+import acme.client.components.validation.ValidNumber;
+import acme.client.components.validation.ValidString;
 import acme.datatypes.Availability;
 import acme.entities.airline.Airline;
 import lombok.Getter;
@@ -25,7 +24,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@ValidFlightCrewIdentifier
 public class FlightCrew extends AbstractRole {
 
 	/*
@@ -44,22 +42,22 @@ public class FlightCrew extends AbstractRole {
 	// Attributes -------------------------------------------------------------
 
 	@Mandatory
-	@ValidIdentifier
+	@ValidString(pattern = "^[A-Z]{2,3}\\d{6}$", message = "Código de empleado inválido: Debe seguir el patrón ^[A-Z]{2,3}\\d{6}$")
 	@Column(unique = true)
-	private String				identifier;
+	private String				employeeCode;
 
 	@Mandatory
-	@ValidPhone
+	@ValidString(pattern = "^\\+?\\d{6,15}$", message = "Número de teléfono inválido: Debe contener entre 6 y 15 dígitos y puede incluir un '+' opcional.")
 	@Automapped
-	private String				phone;
+	private String				phoneNumber;
 
 	@Mandatory
-	@ValidLongText
+	@ValidString
 	@Automapped
 	private String				languageSkills;
 
 	@Mandatory
-	@Valid
+	@Enumerated(EnumType.STRING)
 	@Automapped
 	private Availability		availability;
 
@@ -69,16 +67,16 @@ public class FlightCrew extends AbstractRole {
 	private Money				salary;
 
 	@Optional
-	@ValidExperience
+	@ValidNumber(min = 0, max = 100, integer = 3)
 	@Automapped
-	private Integer				experience;
+	private Integer				yearsOfExperience;
 
 	// Derived attributes -----------------------------------------------------
 
 	// Relationships ----------------------------------------------------------
 
 	@Mandatory
-	@Automapped
+	@Valid
 	@ManyToOne(optional = false)
 	private Airline				airline;
 

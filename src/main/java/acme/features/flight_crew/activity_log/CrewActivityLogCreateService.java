@@ -1,19 +1,17 @@
 
 package acme.features.flight_crew.activity_log;
 
-import java.util.Collection;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import acme.client.components.models.Dataset;
-import acme.client.components.views.SelectChoices;
+import acme.client.helpers.MomentHelper;
 import acme.client.services.AbstractGuiService;
 import acme.client.services.GuiService;
+import acme.datatypes.AssignmentStatus;
 import acme.entities.activity_log.ActivityLog;
 import acme.entities.flight_assignment.FlightAssignment;
-import acme.entities.leg.Leg;
-import acme.features.flight_crew.flight_assignment.FlightAssignmentRepository;
-import acme.features.manager.leg.LegRepository;
 import acme.realms.FlightCrew;
 
 @GuiService
@@ -22,79 +20,71 @@ public class CrewActivityLogCreateService extends AbstractGuiService<FlightCrew,
 	// Internal state ---------------------------------------------------------
 
 	@Autowired
-	private ActivityLogRepository		repository;
-	@Autowired
-	private LegRepository				legRepository;
-	@Autowired
-	private FlightAssignmentRepository	assignmentRepository;
+	private ActivityLogRepository repository;
 
 	// AbstractGuiService interface -------------------------------------------
 
 
 	@Override
 	public void authorise() {
-		Boolean isAuthorised;
+		boolean authorised = false;
 
-		if (!super.getRequest().getMethod().equals("GET"))
-			try {
-				int userAccountId = super.getRequest().getPrincipal().getAccountId();
+		if (super.getRequest().hasData("masterId", int.class)) {
+			int assignmentId = super.getRequest().getData("masterId", int.class);
+			FlightAssignment assignment = this.repository.findAssignmentById(assignmentId);
 
-				Leg selectedLeg = super.getRequest().getData("leg", Leg.class);
-				Boolean validLeg = selectedLeg == null ? true
-					: this.assignmentRepository.findLegsByCrew(userAccountId).stream() //
-						.filter(x -> x.isPublished()) //
-						.anyMatch(x -> x.getId() == selectedLeg.getId());
+			if (assignment != null) {
+				// La etapa debe haber finalizado
+				boolean legFinished = !assignment.getLeg().getScheduledArrival().after(MomentHelper.getCurrentMoment());
 
-				isAuthorised = validLeg;
-			} catch (Exception e) {
-				isAuthorised = false;
+				// Entendemos que una asignación solo puede tener logs si: ella y la etapa son públicas y si la asignación está confirmada (para evitar incongruencias)
+
+				authorised = super.getRequest().getPrincipal().hasRealm(assignment.getFlightCrewMember()) //
+					&& assignment.getAssignmentStatus() == AssignmentStatus.CONFIRMED //
+					&& !assignment.isDraftMode() //
+					&& assignment.getLeg().isPublished() //
+					&& legFinished;
 			}
-		else
-			isAuthorised = true;
+		}
 
-		super.getResponse().setAuthorised(isAuthorised);
+		super.getResponse().setAuthorised(authorised);
 	}
 
 	@Override
 	public void load() {
-		ActivityLog log = new ActivityLog();
-		log.setPublished(false);
+
+		int masterId;
+		FlightAssignment assignment;
+		ActivityLog log;
+
+		masterId = super.getRequest().getData("masterId", int.class);
+		assignment = this.repository.findAssignmentById(masterId);
+
+		log = new ActivityLog();
+		log.setRegistrationMoment(MomentHelper.getCurrentMoment());
+		log.setDraftMode(true);
+		log.setFlightAssignment(assignment);
+
 		super.getBuffer().addData(log);
+
 	}
 
 	@Override
 	public void bind(final ActivityLog log) {
-		super.bindObject(log, "registrationMoment", "incidentType", "description", "severity", "leg");
+		super.bindObject(log, "typeOfIncident", "description", "severityLevel");
 	}
 
 	@Override
 	public void validate(final ActivityLog log) {
-		Boolean status;
 
-		// comprobamos que ningún atributo sea nulo
-		status = log.getRegistrationMoment() == null || log.getIncidentType() == null || log.getDescription() == null || log.getSeverity() == null || log.getLeg() == null;
-		if (status) {
-			super.state(!status, "*", "flight-crew.activity-log.constraint.null-value", new Object[0]);
-			return;
-		}
+		Date now = MomentHelper.getCurrentMoment();
 
-		// assign assignment
-		FlightCrew user = (FlightCrew) super.getRequest().getPrincipal().getActiveRealm();
-		FlightAssignment assignment = this.assignmentRepository.findByAssigneeAndLeg(user, log.getLeg().getId());
-		log.setFlightAssignment(assignment);
+		super.state(log.getFlightAssignment().getAssignmentStatus() == AssignmentStatus.CONFIRMED, "*", "crewMember.log.error.assignment.not-confirmed");
+		super.state(!log.getFlightAssignment().isDraftMode(), "*", "crewMember.log.error.assignment.not-published");
+		super.state(log.getFlightAssignment().getLeg().isPublished(), "*", "crewMember.log.error.leg.not-published");
 
-		status = log.getFlightAssignment() == null;
-		if (status) {
-			super.state(!status, "*", "flight-crew.activity-log.constraint.null-assignment", new Object[0]);
-			return;
-		}
-
-		// registration moment
-		status = log.getRegistrationMoment().before(log.getLeg().getScheduledArrival());
-		if (status) {
-			super.state(!status, "registrationMoment", "flight-crew.activity-log.constraint.log-registered-before-arrival", new Object[0]);
-			return;
-		}
+		Date arrival = log.getFlightAssignment().getLeg().getScheduledArrival();
+		super.state(!arrival.after(now), "*", "crewMember.log.error.leg.finished");
 	}
 
 	@Override
@@ -105,19 +95,11 @@ public class CrewActivityLogCreateService extends AbstractGuiService<FlightCrew,
 	@Override
 	public void unbind(final ActivityLog log) {
 		Dataset dataset;
-		int userAccountId = super.getRequest().getPrincipal().getAccountId();
 
-		dataset = super.unbindObject(log, "registrationMoment", "incidentType", "description", "severity");
-
-		Collection<Leg> legs = this.assignmentRepository.findLegsByCrew(userAccountId).stream() //
-			.filter(x -> x.isPublished()) // filtramos por publicados;
-			.toList();
-		SelectChoices legChoices = SelectChoices.from(legs, "flightCode", log.getLeg());
-		dataset.put("leg", legChoices.getSelected().getKey());
-		dataset.put("legs", legChoices);
-
-		dataset.put("confirmation", false);
-		dataset.put("readonly", false);
+		dataset = super.unbindObject(log, "registrationMoment", "typeOfIncident", "description", "severityLevel");
+		dataset.put("validDraft", !log.getFlightAssignment().isDraftMode() //
+			&& log.getFlightAssignment().getLeg().isPublished());
+		dataset.put("masterId", super.getRequest().getData("masterId", int.class));
 
 		super.getResponse().addData(dataset);
 	}
