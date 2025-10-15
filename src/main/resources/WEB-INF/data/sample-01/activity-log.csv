@@ -1,6 +1,67 @@
-key,registration_moment,incident_type,description,severity,published,key:flight_assignment,key:leg
-log-01,2022/01/01 18:00,weather,"аз дум шамоли сахте буд, ки моро ба писанди ман андаке тезонд",10,false,assignment-01,leg-10
-log-02,2025/01/01 00:00,<marquee>interruptions</marquee>,"someone knocked on the door and we can't find out who was it, the pilot didn't even notice so it didn't matter all that much. I then had to go to the bathroom so i asked the lead attendant and she didn't know what it may have been either so no harm done.",5,false,assignment-02,leg-10
-log-03,2022/01/01 17:00,<script>alert('strong wind');</script>,رياح قوية,9,false,assignment-03,leg-10
-log-04,2022/01/01 17:01,我丟了一個按鈕,' or 'A' = 'A',1,false,assignment-01,leg-10
-log-05,2022/01/01 18:00,' or 'A' = 'A',A,0,false,assignment-01,leg-10
+key,registrationMoment,typeOfIncident,description,severityLevel,key:flightAssignment,draftMode
+#base entity
+incident-01,2011/04/16 0:00,Lorem ipsum dolor sit amet,"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do: eiusmod tempor incididunt ut labore et dolore magna aliqua! Ut*",5,flight-assignment-01,TRUE
+# registrationMoment - standard variations
+incident-02,2000/01/01 0:00,Lorem ipsum dolor sit amet,"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do: eiusmod tempor incididunt ut labore et dolore magna aliqua! Ut*",5,flight-assignment-01,TRUE
+incident-03,2000/01/01 0:01,Lorem ipsum dolor sit amet,"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do: eiusmod tempor incididunt ut labore et dolore magna aliqua! Ut*",5,flight-assignment-01,TRUE
+incident-04,2022/07/29 23:59,Lorem ipsum dolor sit amet,"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do: eiusmod tempor incididunt ut labore et dolore magna aliqua! Ut*",5,flight-assignment-01,TRUE
+incident-05,2022/07/30 0:00,Lorem ipsum dolor sit amet,"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do: eiusmod tempor incididunt ut labore et dolore magna aliqua! Ut*",5,flight-assignment-01,TRUE
+# registrationMoment - no singular values
+# typeOfIncident - standard variations
+incident-06,2011/04/16 0:00,L,"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do: eiusmod tempor incididunt ut labore et dolore magna aliqua! Ut*",5,flight-assignment-01,TRUE
+incident-07,2011/04/16 0:00,Lo,"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do: eiusmod tempor incididunt ut labore et dolore magna aliqua! Ut*",5,flight-assignment-01,TRUE
+incident-08,2011/04/16 0:00,"Lorem ipsum dolor sit amet, consectetur adipiscin","Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do: eiusmod tempor incididunt ut labore et dolore magna aliqua! Ut*",5,flight-assignment-01,TRUE
+incident-09,2011/04/16 0:00,"Lorem ipsum dolor sit amet, consectetur adipiscing","Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do: eiusmod tempor incididunt ut labore et dolore magna aliqua! Ut*",5,flight-assignment-01,TRUE
+incident-10,2011/04/16 0:00,โลเร็ม อิปซัม,"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do: eiusmod tempor incididunt ut labore et dolore magna aliqua! Ut*",5,flight-assignment-01,TRUE
+incident-11,2011/04/16 0:00,لوريم إيبسوم,"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do: eiusmod tempor incididunt ut labore et dolore magna aliqua! Ut*",5,flight-assignment-01,TRUE
+incident-12,2011/04/16 0:00,洛伦·伊普森,"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do: eiusmod tempor incididunt ut labore et dolore magna aliqua! Ut*",5,flight-assignment-01,TRUE
+incident-13,2011/04/16 0:00,<marquee>Hacked</marquee>,"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do: eiusmod tempor incididunt ut labore et dolore magna aliqua! Ut*",5,flight-assignment-01,TRUE
+incident-14,2011/04/16 0:00,<script>alert(�Hacked!�);</script>,"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do: eiusmod tempor incididunt ut labore et dolore magna aliqua! Ut*",5,flight-assignment-01,TRUE
+incident-15,2011/04/16 0:00,' or 'A' = 'A,"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do: eiusmod tempor incididunt ut labore et dolore magna aliqua! Ut*",5,flight-assignment-01,TRUE
+# typeOfIncident - no singular values
+# description - standard variations
+incident-16,2011/04/16 0:00,Lorem ipsum dolor sit amet,L,5,flight-assignment-01,TRUE
+incident-17,2011/04/16 0:00,Lorem ipsum dolor sit amet,Lo,5,flight-assignment-01,TRUE
+incident-18,2011/04/16 0:00,Lorem ipsum dolor sit amet,"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do: eiusmod tempor incididunt ut labore et dolore magna aliqua! Ut enim ad minim veniam? Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor",5,flight-assignment-01,TRUE
+incident-19,2011/04/16 0:00,Lorem ipsum dolor sit amet,"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do: eiusmod tempor incididunt ut labore et dolore magna aliqua! Ut enim ad minim veniam? Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor*",5,flight-assignment-01,TRUE
+incident-20,2011/04/16 0:00,Lorem ipsum dolor sit amet,โลเร็ม อิปซัม,5,flight-assignment-01,TRUE
+incident-21,2011/04/16 0:00,Lorem ipsum dolor sit amet,لوريم إيبسوم,5,flight-assignment-01,TRUE
+incident-22,2011/04/16 0:00,Lorem ipsum dolor sit amet,洛伦·伊普森,5,flight-assignment-01,TRUE
+incident-23,2011/04/16 0:00,Lorem ipsum dolor sit amet,<marquee>Hacked</marquee>,5,flight-assignment-01,TRUE
+incident-24,2011/04/16 0:00,Lorem ipsum dolor sit amet,<script>alert(�Hacked!�);</script>,5,flight-assignment-01,TRUE
+incident-25,2011/04/16 0:00,Lorem ipsum dolor sit amet,' or 'A' = 'A,5,flight-assignment-01,TRUE
+# description - no singular values
+# severityLevel - standard variations
+incident-26,2011/04/16 0:00,Lorem ipsum dolor sit amet,"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do: eiusmod tempor incididunt ut labore et dolore magna aliqua! Ut*",0,flight-assignment-01,TRUE
+incident-27,2011/04/16 0:00,Lorem ipsum dolor sit amet,"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do: eiusmod tempor incididunt ut labore et dolore magna aliqua! Ut*",1,flight-assignment-01,TRUE
+incident-28,2011/04/16 0:00,Lorem ipsum dolor sit amet,"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do: eiusmod tempor incididunt ut labore et dolore magna aliqua! Ut*",9,flight-assignment-01,TRUE
+incident-29,2011/04/16 0:00,Lorem ipsum dolor sit amet,"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do: eiusmod tempor incididunt ut labore et dolore magna aliqua! Ut*",10,flight-assignment-01,TRUE
+# severityLevel - no singular values
+# flightAssignment - standard variations
+incident-30,2011/04/16 0:00,Lorem ipsum dolor sit amet,"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do: eiusmod tempor incididunt ut labore et dolore magna aliqua! Ut*",5,flight-assignment-02,TRUE
+incident-31,2011/04/16 0:00,Lorem ipsum dolor sit amet,"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do: eiusmod tempor incididunt ut labore et dolore magna aliqua! Ut*",5,flight-assignment-03,TRUE
+incident-32,2011/04/16 0:00,Lorem ipsum dolor sit amet,"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do: eiusmod tempor incididunt ut labore et dolore magna aliqua! Ut*",5,flight-assignment-04,TRUE
+incident-33,2011/04/16 0:00,Lorem ipsum dolor sit amet,"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do: eiusmod tempor incididunt ut labore et dolore magna aliqua! Ut*",5,flight-assignment-05,TRUE
+incident-34,2011/04/16 0:00,Lorem ipsum dolor sit amet,"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do: eiusmod tempor incididunt ut labore et dolore magna aliqua! Ut*",5,flight-assignment-06,TRUE
+incident-35,2011/04/16 0:00,Lorem ipsum dolor sit amet,"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do: eiusmod tempor incididunt ut labore et dolore magna aliqua! Ut*",5,flight-assignment-07,TRUE
+incident-36,2011/04/16 0:00,Lorem ipsum dolor sit amet,"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do: eiusmod tempor incididunt ut labore et dolore magna aliqua! Ut*",5,flight-assignment-08,TRUE
+incident-37,2011/04/16 0:00,Lorem ipsum dolor sit amet,"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do: eiusmod tempor incididunt ut labore et dolore magna aliqua! Ut*",5,flight-assignment-09,TRUE
+incident-38,2011/04/16 0:00,Lorem ipsum dolor sit amet,"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do: eiusmod tempor incididunt ut labore et dolore magna aliqua! Ut*",5,flight-assignment-10,TRUE
+incident-39,2011/04/16 0:00,Lorem ipsum dolor sit amet,"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do: eiusmod tempor incididunt ut labore et dolore magna aliqua! Ut*",5,flight-assignment-11,TRUE
+incident-40,2011/04/16 0:00,Lorem ipsum dolor sit amet,"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do: eiusmod tempor incididunt ut labore et dolore magna aliqua! Ut*",5,flight-assignment-12,TRUE
+incident-41,2011/04/16 0:00,Lorem ipsum dolor sit amet,"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do: eiusmod tempor incididunt ut labore et dolore magna aliqua! Ut*",5,flight-assignment-13,TRUE
+incident-42,2011/04/16 0:00,Lorem ipsum dolor sit amet,"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do: eiusmod tempor incididunt ut labore et dolore magna aliqua! Ut*",5,flight-assignment-14,TRUE
+incident-43,2011/04/16 0:00,Lorem ipsum dolor sit amet,"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do: eiusmod tempor incididunt ut labore et dolore magna aliqua! Ut*",5,flight-assignment-15,TRUE
+incident-44,2011/04/16 0:00,Lorem ipsum dolor sit amet,"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do: eiusmod tempor incididunt ut labore et dolore magna aliqua! Ut*",5,flight-assignment-16,TRUE
+incident-45,2011/04/16 0:00,Lorem ipsum dolor sit amet,"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do: eiusmod tempor incididunt ut labore et dolore magna aliqua! Ut*",5,flight-assignment-17,TRUE
+incident-46,2011/04/16 0:00,Lorem ipsum dolor sit amet,"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do: eiusmod tempor incididunt ut labore et dolore magna aliqua! Ut*",5,flight-assignment-18,TRUE
+incident-47,2011/04/16 0:00,Lorem ipsum dolor sit amet,"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do: eiusmod tempor incididunt ut labore et dolore magna aliqua! Ut*",5,flight-assignment-19,TRUE
+incident-48,2011/04/16 0:00,Lorem ipsum dolor sit amet,"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do: eiusmod tempor incididunt ut labore et dolore magna aliqua! Ut*",5,flight-assignment-20,TRUE
+incident-49,2011/04/16 0:00,Lorem ipsum dolor sit amet,"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do: eiusmod tempor incididunt ut labore et dolore magna aliqua! Ut*",5,flight-assignment-21,TRUE
+incident-50,2011/04/16 0:00,Lorem ipsum dolor sit amet,"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do: eiusmod tempor incididunt ut labore et dolore magna aliqua! Ut*",5,flight-assignment-22,TRUE
+incident-51,2011/04/16 0:00,Lorem ipsum dolor sit amet,"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do: eiusmod tempor incididunt ut labore et dolore magna aliqua! Ut*",5,flight-assignment-23,TRUE
+incident-52,2011/04/16 0:00,Lorem ipsum dolor sit amet,"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do: eiusmod tempor incididunt ut labore et dolore magna aliqua! Ut*",5,flight-assignment-24,TRUE
+# flightAssignment - no singular values
+# draftMode - standard variations
+incident-53,2011/04/16 0:00,NON_EDITABLE,"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do: eiusmod tempor incididunt ut labore et dolore magna aliqua! Ut*",5,flight-assignment-01,FALSE
+# draftMode - no singular values

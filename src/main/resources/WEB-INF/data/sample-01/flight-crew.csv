@@ -1,6 +1,6 @@
-key,key:userAccount,identifier,phone,language_skills,availability,salary,experience,key:airline
-flight-crew-01,user-account-member-01,ADO123456,+34000000000,Very good dutch,AVAILABLE,EUR 2750.00,5,airline-01
-flight-crew-02,user-account-member-02,DSD567891,000000,mjög góð enska,ON_LEAVE,EUR 2000.00,null,airline-01
-flight-crew-03,user-account-member-03,LP234567,000000000,بہت بھیڑی انگریزی,ON_VACATION,EUR 3200.00,10,airline-01
-flight-crew-04,user-account-member-04,ML123456,+34000000000,' or 'A'='A',AVAILABLE,EUR 1450.00,3,airline-03
-flight-crew-05,user-account-member-05,MF123456,000000,"Very good dutch, english and Japanese. I know a little bit of Chinese but nothing much. Also I could probably ask for bread in Portuguese but nothing much more. Same thing in Italian and French but more because of similarities than real knowledge of them.",AVAILABLE,EUR 1000.00,0,airline-04
+key,employeeCode,phoneNumber,languageSkills,availability,key:airline,salary,yearsOfExperience,key:user-account
+flight-crew-member-01,ZA859220,+34123456,"Lorem ipsum dolor sit amet, consectetur adipiscing",AVAILABLE,airline-01,EUR 500000.00,50,user-account-member-01
+flight-crew-member-02,PE403790,61341708,L,ON_VACATION,airline-02,EUR 0.00,,user-account-member-02
+flight-crew-member-03,PNR895052,+9818872088,Lo,ON_LEAVE,airline-02,EUR 0.01,0,user-account-member-03
+flight-crew-member-04,ROQ459171,+1229190,Lorem ipsum dolor sit amet,AVAILABLE,airline-03,EUR 999999.99,1,user-account-member-04
+flight-crew-member-05,MF956828,9568974900,"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor",AVAILABLE,airline-03,EUR 1000000.00,100,user-account-member-05
